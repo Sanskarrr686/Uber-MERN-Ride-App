@@ -9,7 +9,7 @@ router.post('/create',
     authMiddleware.authUser,
     body('pickup').isString().isLength({ min: 3 }).withMessage('Invalid pickup address'),
     body('destination').isString().isLength({ min: 3 }).withMessage('Invalid destination address'),
-    body('vehicleType').isString().isIn([ 'auto', 'car', 'moto' ]).withMessage('Invalid vehicle type'),
+    body('vehicleType').isString().isIn(['auto', 'car', 'moto']).withMessage('Invalid vehicle type'),
     rideController.createRide
 )
 
@@ -39,6 +39,23 @@ router.post('/end-ride',
     rideController.endRide
 )
 
+router.post('/payment',
 
+    authMiddleware.authUser,
+
+    body('rideId').isMongoId().withMessage('Invalid ride id'),
+
+    body('paymentID').isString().isLength({ min: 5 }).withMessage('Invalid payment ID'),
+
+    body('paymentMethod').isIn(['upi', 'cash']).withMessage('Invalid payment method'),
+
+    rideController.makePayment
+
+)
+
+router.get('/captain-rides',
+    authMiddleware.authCaptain,
+    rideController.getCaptainRides
+)
 
 module.exports = router;

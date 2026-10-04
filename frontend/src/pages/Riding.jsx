@@ -11,9 +11,14 @@ const Riding = () => {
     const { socket } = useContext(SocketContext)
     const navigate = useNavigate()
 
-    socket.on("ride-ended", () => {
-        navigate('/home')
-    })
+    useEffect(() => {
+        socket.on("ride-ended", () => {
+            navigate('/home')
+        })
+        return () => {
+            socket.off("ride-ended")
+        }
+    }, [socket, navigate])
 
 
     return (
@@ -22,8 +27,10 @@ const Riding = () => {
                 <i className="text-lg font-medium ri-home-5-line"></i>
             </Link>
             <div className='h-1/2'>
-                <LiveTracking />
-
+                <LiveTracking
+                    pickup={ride?.pickup}
+                    destination={ride?.destination}
+                />
             </div>
             <div className='h-1/2 p-4'>
                 <div className='flex items-center justify-between'>
@@ -55,7 +62,12 @@ const Riding = () => {
                         </div>
                     </div>
                 </div>
-                <button className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Make a Payment</button>
+                <button
+                    onClick={() => navigate('/payment', { state: { ride } })}
+                    className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'
+                >
+                    Make a Payment
+                </button>
             </div>
         </div>
     )

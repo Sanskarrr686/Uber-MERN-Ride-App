@@ -48,12 +48,15 @@ const CaptainHome = () => {
         // return () => clearInterval(locationInterval)
     }, [])
 
-    socket.on('new-ride', (data) => {
-
-        setRide(data)
-        setRidePopupPanel(true)
-
-    })
+    useEffect(() => {
+        socket.on('new-ride', (data) => {
+            setRide(data)
+            setRidePopupPanel(true)
+        })
+        return () => {
+            socket.off('new-ride')
+        }
+    }, [socket])
 
     async function confirmRide() {
 
@@ -111,7 +114,7 @@ const CaptainHome = () => {
                 <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
 
             </div>
-            <div className='h-2/5 p-6'>
+            <div className='h-2/5 p-6 overflow-y-auto'>
                 <CaptainDetails />
             </div>
             <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
