@@ -12,7 +12,7 @@ import WaitingForDriver from '../components/WaitingForDriver'
 import { SocketContext } from '../context/SocketContext'
 import { useContext } from 'react'
 import { UserDataContext } from '../context/UserContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import LiveTracking from '../components/LiveTracking'
 
 
@@ -325,6 +325,14 @@ const Home = () => {
                 src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
                 alt="Uber"
             />
+
+            <Link
+                to='/user/logout'
+                title="Logout"
+                className={`fixed right-5 top-5 h-10 w-10 bg-white flex items-center justify-center rounded-full z-20 shadow-md transition-opacity duration-300 ${panelOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            >
+                <i className="text-lg font-medium ri-logout-box-r-line"></i>
+            </Link>
 
 
             {/* Live map */}

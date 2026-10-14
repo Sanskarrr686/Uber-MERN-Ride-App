@@ -71,11 +71,21 @@ module.exports.getCaptainProfile = async (req, res, next) => {
 }
 
 module.exports.logoutCaptain = async (req, res, next) => {
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
+    try {
+        const token = req.cookies?.token || req.headers?.authorization?.split(' ')[ 1 ];
 
-    await blackListTokenModel.create({ token });
+        if (token) {
+            await blackListTokenModel.updateOne(
+                { token },
+                { token },
+                { upsert: true }
+            );
+        }
 
-    res.clearCookie('token');
+        res.clearCookie('token');
 
-    res.status(200).json({ message: 'Logout successfully' });
+        res.status(200).json({ message: 'Logout successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 }

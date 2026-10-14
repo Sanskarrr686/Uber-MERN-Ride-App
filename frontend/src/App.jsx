@@ -36,22 +36,13 @@ const App = () => {
               <Home />
             </UserProtectWrapper>
           } />
-        <Route path='/user/logout'
-          element={<UserProtectWrapper>
-            <UserLogout />
-          </UserProtectWrapper>
-          } />
+        <Route path='/user/logout' element={<UserLogout />} />
         <Route path='/captain-home' element={
           <CaptainProtectWrapper>
             <CaptainHome />
           </CaptainProtectWrapper>
-
         } />
-        <Route path='/captain/logout' element={
-          <CaptainProtectWrapper>
-            <CaptainLogout />
-          </CaptainProtectWrapper>
-        } />
+        <Route path='/captain/logout' element={<CaptainLogout />} />
       </Routes>
     </div>
   )
